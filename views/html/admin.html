@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Smart Waste Management</title>
+  <link rel="stylesheet" href="public/css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="admin-container">
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">All Reports</a></li>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="dashboard">
+      <header class="admin-header">
+        <h1>Smart Waste Management - Admin</h1>
+      </header>
+
+      <section class="stats-cards">
+        <div class="card total">
+          <h3>Total Reports</h3>
+          <p id="totalReports">0</p>
+        </div>
+        <div class="card pending">
+          <h3>Pending</h3>
+          <p id="pendingReports">0</p>
+        </div>
+        <div class="card resolved">
+          <h3>Resolved</h3>
+          <p id="resolvedReports">0</p>
+        </div>
+      </section>
+
+      <section class="reports-table">
+        <h2>All Submitted Reports</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Issue Type</th>
+              <th>User ID</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Image</th>
+              <th>Timestamp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reportTableBody">
+            <!-- Dynamically inserted rows -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script src="public/JS/admin.js"></script>
+</body>
+</html>

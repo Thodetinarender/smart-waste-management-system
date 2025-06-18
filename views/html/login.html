@@ -4,17 +4,20 @@
   <meta charset="UTF-8">
   <title>Log In | Smart Waste Management System</title>
   <link rel="stylesheet" href="public/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="auth-container">
     <h2>Welcome Back</h2>
     <p class="subtitle">Log in to report or manage waste issues in your city.</p>
-    <form action="/login" method="POST">
+   <form>
       <input type="email" name="email" placeholder="Email Address" required>
       <input type="password" name="password" placeholder="Password" required>
       <button type="submit">Log In</button>
     </form>
     <p class="switch-link">Don't have an account? <a href="/signup">Sign Up</a></p>
   </div>
+
+  <script src="public/JS/login.js"></script>
 </body>
 </html>

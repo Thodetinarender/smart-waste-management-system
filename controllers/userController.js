@@ -21,8 +21,14 @@ async function login(req, res) {
     if (!user) {
       return res.status(401).send('Invalid email or password.');
     }
-    // You can set a session or JWT here if needed
-    res.redirect('/index');
+    res.cookie('loggedIn', 'true', { httpOnly: false });
+    res.cookie('userId', user.id, { httpOnly: false });
+    res.cookie('isAdmin', user.isAdmin ? 'true' : 'false', { httpOnly: false });
+    if (user.isAdmin) {
+      res.redirect('/admin');
+    } else {
+      res.redirect('/');
+    }
   } catch (err) {
     res.status(500).send('Error logging in.');
   }

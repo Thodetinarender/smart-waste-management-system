@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Waste Management System</title>
+  <link rel="stylesheet" href="public/css/index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</head>
+
+<body>
+  <header class="navbar">
+    <h1>Smart Waste Management</h1>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showReportForm()">Report Trash</a></li>
+        <li><a href="#myreports" onclick="showMyReports()">My Reports</a></li>
+        <li id="loginNav"><a href="/login">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <h2>Clean City, Healthy Living</h2>
+    <p>Report trash easily and help your city stay clean.</p>
+    <a href="#" class="btn" onclick="showReportForm()">Report Now</a>
+  </section>
+
+  <section id="report" class="form-section" style="display: none;">
+    <h2>📸 Report Trash Spot</h2>
+    <div id="loginPrompt" style="display:none; color:red; margin-bottom:1em;">
+      Please <a href="/login">login</a> first to report new trash.
+    </div>
+    <form id="reportForm" enctype="multipart/form-data">
+
+      <label for="issueType">Select Issue Type</label>
+      <select id="issueType" name="issueType" required>
+        <option value="">-- Select Issue Type --</option>
+        <option value="Road Damage">🛣️ Road Damage</option>
+        <option value="Garbage Issue">🚮 Garbage/Waste Problem</option>
+        <option value="Drainage Blockage">💧 Drainage Blockage</option>
+        <option value="Water Leakage">🚰 Water Leakage (Govt. Line)</option>
+      </select>
+
+      <label for="image">Upload Image</label>
+      <input type="file" id="image" name="image" accept="image/*" required>
+
+      <label for="description">Description</label>
+      <textarea id="description" name="description" placeholder="Describe the trash spot..." required></textarea>
+
+      <label for="location">Location (Drag the pin on map)</label>
+      <div id="map"></div>
+      <input type="hidden" id="latitude" name="latitude">
+      <input type="hidden" id="longitude" name="longitude">
+
+      <div id="addressDisplay" style="margin-top: 10px; font-style: italic; color: #333;"></div>
+
+      <button type="submit">Submit Report</button>
+      <button type="button" onclick="goBackToHome()">Back</button>
+    </form>
+  </section>
+
+
+
+  <section id="myreports" class="report-list" style="display: none;">
+    <h2>📝 My Reports</h2>
+    <div id="myReportsContainer" class="report-grid"></div>
+  </section>
+
+
+  <footer>
+    <p>&copy; 2025 Smart Waste Management System</p>
+  </footer>
+
+  <script src="public/JS/index.js"></script>
+  <script src="public/JS/myReport.js"></script>
+
+</body>
+
+</html>

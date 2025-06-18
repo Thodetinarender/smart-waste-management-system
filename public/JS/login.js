@@ -9,8 +9,18 @@ document.querySelector('form').addEventListener('submit', async function(e) {
     body: JSON.stringify(data)
   });
 
+  if (res.redirected) {
+    window.location.href = res.url;
+    return;
+  }
+
   if (res.ok) {
-    window.location.href = '/';
+    const isAdmin = document.cookie.split(';').some(c => c.trim().startsWith('isAdmin=true'));
+    if (isAdmin) {
+      window.location.href = '/admin';
+    } else {
+      window.location.href = '/';
+    }
   } else {
     alert(await res.text());
   }
