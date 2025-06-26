@@ -1,46 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Smart Waste Management</title>
   <link rel="stylesheet" href="public/css/admin.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
   <div class="admin-container">
     <aside class="sidebar">
       <h2>Admin Panel</h2>
       <ul>
-        <li><a href="#">Dashboard</a></li>
+        <li><a href="#" id="dashboardLink">Dashboard</a></li>
         <li><a href="#">All Reports</a></li>
         <li><a href="#">Users</a></li>
         <li><a href="#">Settings</a></li>
         <li><a href="/logout">Logout</a></li>
       </ul>
     </aside>
-
     <main class="dashboard">
       <header class="admin-header">
         <h1>Smart Waste Management - Admin</h1>
       </header>
 
-      <section class="stats-cards">
-        <div class="card total">
-          <h3>Total Reports</h3>
-          <p id="totalReports">0</p>
-        </div>
-        <div class="card pending">
-          <h3>Pending</h3>
-          <p id="pendingReports">0</p>
-        </div>
-        <div class="card resolved">
-          <h3>Resolved</h3>
-          <p id="resolvedReports">0</p>
+      <!-- Dashboard Section -->
+      <section id="dashboardSection" style="display: none;">
+        <div class="dashboard-grid">
+          <div class="stats-cards">
+            <div class="card total">
+              <h3>Total Reports</h3>
+              <p id="totalReports">0</p>
+            </div>
+            <div class="card pending">
+              <h3>Pending</h3>
+              <p id="pendingReports">0</p>
+            </div>
+            <div class="card in-progress">
+              <h3>In Progress</h3>
+              <p id="inProgressReports">0</p>
+            </div>
+            <div class="card resolved">
+              <h3>Resolved</h3>
+              <p id="resolvedReports">0</p>
+            </div>
+          </div>
+
+          <div class="chart-section">
+            <h2>Report Status Overview</h2>
+            <canvas id="reportChart"></canvas>
+          </div>
         </div>
       </section>
 
-      <section class="reports-table">
+
+      <!-- Reports Section -->
+      <section class="reports-table" id="reportsSection" style="display: none;">
         <h2>All Submitted Reports</h2>
         <table>
           <thead>
@@ -60,9 +78,68 @@
           </tbody>
         </table>
       </section>
+
+
+      <!-- Users Section -->
+      <section class="users-section" id="usersSection" style="display: none;">
+        <h2>All Registered Users</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <!-- Dynamically inserted rows -->
+          </tbody>
+        </table>
+      </section>
+
     </main>
+
   </div>
+
+
+  <div id="inProgressModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h2>Mark as In Progress</h2>
+    <form id="inProgressForm">
+      <input type="hidden" id="progressReportId">
+      <label>Description:</label>
+      <textarea id="progressDescription" required></textarea>
+      <label>Upload Image (optional):</label>
+      <input type="file" id="progressImage" accept="image/*">
+      <div style="margin-top:1em;">
+        <button type="submit">Submit</button>
+        <button type="button" onclick="closeModal('inProgressModal')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Resolve Modal -->
+<div id="resolveModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h2>Mark as Resolved</h2>
+    <form id="resolveForm">
+      <input type="hidden" id="resolveReportId">
+      <label>Description:</label>
+      <textarea id="resolveDescription" required></textarea>
+      <label>Upload Image (optional):</label>
+      <input type="file" id="resolveImage" accept="image/*">
+      <button type="submit">Submit</button>
+      <button type="button" onclick="closeModal('resolveModal')">Cancel</button>
+    </form>
+  </div>
+</div>
+
+
 
   <script src="public/JS/admin.js"></script>
 </body>
+
 </html>

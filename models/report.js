@@ -39,6 +39,23 @@ const Report = sequelize.define('Report', {
         type: Sequelize.STRING,
         defaultValue: 'Pending'
     },
+    inProgressDescription: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    inProgressImage: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    resolveDescription: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    resolveImage: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
     timestamp: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW

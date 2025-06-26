@@ -15,7 +15,10 @@ function updateUIForLogin() {
 
 function showReportForm() {
   document.getElementById("home").style.display = "none";
+  document.getElementById("profile").style.display = "none";
+  document.getElementById("latestResolvedSection").style.display = "none";
   document.getElementById("report").style.display = "block";
+  document.getElementById("myreports").style.display = "none";
   window.scrollTo(0, 0);
 
   const loginPrompt = document.getElementById('loginPrompt');
@@ -37,6 +40,9 @@ function showReportForm() {
 
 function goBackToHome() {
   document.getElementById("report").style.display = "none";
+  document.getElementById("profile").style.display = "none";
+  document.getElementById("myreports").style.display = "none";
+  document.getElementById("latestResolvedSection").style.display = "block";
   document.getElementById("home").style.display = "block";
   window.scrollTo(0, 0);
 }
@@ -121,6 +127,44 @@ function initMap() {
 // Run map init after DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   initMap();
+
+  // Show section based on hash
+  if (window.location.hash === "#myreports") {
+    showMyReports();
+  } else if (window.location.hash === "#profile") {
+    showProfile();
+  }
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.onclick = async function() {
+      const res = await fetch('/logout', { method: 'POST', credentials: 'include' });
+      if (res.ok) {
+        window.location.href = '/login';
+      } else {
+        alert('Logout failed');
+      }
+    };
+  }
+});
+
+function insertProfileLinkIfLoggedIn() {
+  if (isLoggedIn()) {
+    const navList = document.querySelector('.navbar ul');
+    if (!document.getElementById('profileLink')) {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="#profile" id="profileLink" onclick="showProfile()">Profile</a>`;
+      navList.insertBefore(li, document.getElementById('loginNav'));
+    }
+  } else {
+    const profileLink = document.getElementById('profileLink');
+    if (profileLink) profileLink.parentElement.remove();
+  }
+}
+
+// Call this after DOMContentLoaded and after login state changes
+document.addEventListener("DOMContentLoaded", () => {
+  insertProfileLinkIfLoggedIn();
 });
 
 // Handle report submission
@@ -164,3 +208,169 @@ function addReportToUI(report) {
 
   container.appendChild(card);
 }
+
+window.addEventListener("hashchange", () => {
+  if (window.location.hash === "#myreports") {
+    showMyReports();
+  } else if (window.location.hash === "#profile") {
+    showProfile();
+  } else {
+    goBackToHome();
+  }
+});
+
+function showProfile() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("report").style.display = "none";
+  document.getElementById("myreports").style.display = "none";
+  document.getElementById("latestResolvedSection").style.display = "none";
+  document.getElementById("profile").style.display = "flex";
+  window.scrollTo(0, 0);
+
+  // Show loading state
+  document.getElementById('profileNameDisplay').textContent = "Loading...";
+  document.getElementById('profileEmailDisplay').textContent = "";
+  document.getElementById('profileMobileDisplay').textContent = "";
+  document.getElementById('profileAddressDisplay').textContent = "";
+  document.getElementById('profileJoinedDisplay').textContent = "";
+
+  fetch('/me', { credentials: 'include' })
+    .then(res => {
+      if (!res.ok) throw new Error('Not authenticated');
+      return res.json();
+    })
+    .then(user => {
+      document.getElementById('profileNameDisplay').textContent = user.name;
+      document.getElementById('profileEmailDisplay').textContent = user.email;
+      document.getElementById('profileMobileDisplay').textContent = user.mobile;
+      document.getElementById('profileAddressDisplay').textContent = user.address || 'N/A';
+      document.getElementById('profileJoinedDisplay').textContent = new Date(user.createdAt).toLocaleString();
+    })
+    .catch(err => {
+      document.getElementById('profileNameDisplay').textContent = "Error loading profile";
+      document.getElementById('profileEmailDisplay').textContent = "";
+      document.getElementById('profileMobileDisplay').textContent = "";
+      document.getElementById('profileAddressDisplay').textContent = "";
+      document.getElementById('profileJoinedDisplay').textContent = "";
+    });
+}
+
+// Inline edit for Name
+document.getElementById('editNameBtn').onclick = function() {
+  document.getElementById('profileNameDisplay').style.display = 'none';
+  this.style.display = 'none';
+  document.getElementById('profileNameInput').style.display = '';
+  document.getElementById('saveNameBtn').style.display = '';
+  document.getElementById('profileNameInput').value = document.getElementById('profileNameDisplay').textContent;
+  document.getElementById('profileNameInput').focus();
+};
+document.getElementById('saveNameBtn').onclick = async function() {
+  const newName = document.getElementById('profileNameInput').value.trim();
+  if (!newName) return alert('Name cannot be empty');
+  const res = await fetch('/me/name', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ name: newName })
+  });
+  if (res.ok) {
+    document.getElementById('profileNameDisplay').textContent = newName;
+    document.getElementById('profileNameDisplay').style.display = '';
+    document.getElementById('editNameBtn').style.display = '';
+    document.getElementById('profileNameInput').style.display = 'none';
+    document.getElementById('saveNameBtn').style.display = 'none';
+  } else {
+    alert('Failed to update name');
+  }
+};
+
+// Inline edit for Address
+document.getElementById('editAddressBtn').onclick = function() {
+  document.getElementById('profileAddressDisplay').style.display = 'none';
+  this.style.display = 'none';
+  document.getElementById('profileAddressInput').style.display = '';
+  document.getElementById('saveAddressBtn').style.display = '';
+  document.getElementById('profileAddressInput').value = document.getElementById('profileAddressDisplay').textContent;
+  document.getElementById('profileAddressInput').focus();
+};
+document.getElementById('saveAddressBtn').onclick = async function() {
+  const newAddress = document.getElementById('profileAddressInput').value.trim();
+  const res = await fetch('/me/address', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ address: newAddress })
+  });
+  if (res.ok) {
+    document.getElementById('profileAddressDisplay').textContent = newAddress;
+    document.getElementById('profileAddressDisplay').style.display = '';
+    document.getElementById('editAddressBtn').style.display = '';
+    document.getElementById('profileAddressInput').style.display = 'none';
+    document.getElementById('saveAddressBtn').style.display = 'none';
+  } else {
+    alert('Failed to update address');
+  }
+};
+
+function renderLatestResolved() {
+  fetch('/latest-resolved')
+    .then(res => res.json())
+    .then(reports => {
+      const container = document.getElementById('latestResolvedContainer');
+      if (!container) return;
+      if (!reports.length) {
+        container.innerHTML = "<p>No resolved reports yet.</p>";
+        return;
+      }
+      container.innerHTML = ""; // Clear previous content
+
+      reports.forEach(report => {
+        let statusClass = 'status-resolved';
+        let showImage = report.resolveImage
+          ? `/uploads/${report.resolveImage}`
+          : (report.image ? `/uploads/${report.image}` : null);
+
+        // Create card element
+        const card = document.createElement("div");
+        card.classList.add("report-card", "myreport-card", "compact-card", "shop-card");
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.onclick = () => {
+          // Use the same overlay as My Reports
+          if (typeof openReportOverlay === "function") {
+            openReportOverlay(report, showImage, statusClass);
+          }
+        };
+
+        card.innerHTML = `
+          <div class="myreport-imgbox">
+            ${
+              showImage && !showImage.endsWith('/undefined') && !showImage.endsWith('/null')
+                ? `<img src="${showImage}" alt="Resolved Image" class="myreport-image main-img"/>`
+                : `<div class="no-image-placeholder">No Image Uploaded</div>`
+            }
+          </div>
+          <div class="myreport-header">
+            <span class="myreport-type">${report.issueType}</span>
+            <span class="myreport-status ${statusClass}">Resolved</span>
+          </div>
+          <div class="myreport-body">
+            <div class="myreport-desc">${report.resolveDescription ? report.resolveDescription : report.description}</div>
+          </div>
+          <div class="myreport-footer">
+            <span title="Location">📍 ${report.address ? report.address : ''}</span>
+            <span title="Date & Time">🕒 ${new Date(report.timestamp).toLocaleString()}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    })
+    .catch(() => {
+      const container = document.getElementById('latestResolvedContainer');
+      if (container) container.innerHTML = "<p style='color:red;'>Failed to load resolved reports.</p>";
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderLatestResolved();
+});

@@ -21,7 +21,22 @@ async function authenticateUser(email, password) {
   return user;
 }
 
+async function getUserById(id) {
+  return User.findByPk(id);
+}
+
+async function updateUserName(id, name) {
+  return User.update({ name }, { where: { id } });
+}
+
+async function updateUserAddress(id, address) {
+  return User.update({ address }, { where: { id } });
+}
+
 module.exports = {
   createUser,
-  authenticateUser
+  authenticateUser,
+  getUserById,
+  updateUserName,
+  updateUserAddress
 };

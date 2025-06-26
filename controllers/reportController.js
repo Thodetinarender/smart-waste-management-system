@@ -37,4 +37,14 @@ async function getUserReports(req, res) {
   }
 }
 
-module.exports = { createReport , getUserReports };
+
+async function getLatestResolved(req, res) {
+  try {
+    const reports = await reportService.getLatestResolvedReports(5);
+    res.json(reports);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching latest resolved reports' });
+  }
+}
+
+module.exports = { createReport , getUserReports, getLatestResolved };

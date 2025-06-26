@@ -17,6 +17,8 @@ const upload = multer({ storage });
 
 router.post('/report', upload.single('image'), reportController.createReport);
 router.get('/myreports', reportController.getUserReports);
+router.get('/latest-resolved', reportController.getLatestResolved);
+
 
 
 module.exports = router;

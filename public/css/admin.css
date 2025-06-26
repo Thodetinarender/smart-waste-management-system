@@ -77,6 +77,10 @@ body {
 .card.pending {
   background: #f0ad4e;
 }
+.card.in-progress {
+  background: #2196f3;
+}
+
 .card.resolved {
   background: #5bc0de;
 }
@@ -125,7 +129,10 @@ table img {
   background: #ffeb3b;
   color: #555;
 }
-
+.status.in-progress {
+  background: #2196f3;
+  color: white;
+}
 .status.resolved {
   background: #4caf50;
   color: white;
@@ -140,6 +147,20 @@ table img {
   font-size: 0.85rem;
 }
 
+.inprogress-btn {
+  background-color: #42a5f5;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.inprogress-btn:hover {
+  background-color: #1e88e5;
+}
+
+
 .actions .resolve-btn {
   background: #4caf50;
   color: white;
@@ -148,4 +169,106 @@ table img {
 .actions .delete-btn {
   background: #e53935;
   color: white;
+}
+
+.chart-section h2 {
+  margin-bottom: 20px;
+  color: #2b7a0b;
+}
+
+
+#chartSection {
+  display: none;
+}
+#dashboardSection,
+#reportsSection {
+  display: none;
+}
+
+/* Group stats & chart side by side */
+.dashboard-grid {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* Make cards and chart responsive */
+.stats-cards {
+  flex: 2;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.chart-section {
+  flex: 1;
+  max-width: 350px;
+  padding: 25px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.chart-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(56, 218, 7, 0.12);
+}
+#reportChart {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 260px;
+}
+
+.chart-section h2 {
+  color: #2b7a0b;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Responsive: stack cards and chart vertically on small screens */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    flex-direction: column;
+  }
+
+  .stats-cards {
+    flex-direction: column;
+  }
+
+  .chart-section {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+}
+
+/* ...existing code... */
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background: #fff;
+  margin: 8% auto;
+  padding: 30px 25px;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  position: relative;
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from { transform: translateY(-40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

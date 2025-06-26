@@ -21,16 +21,25 @@
       <ul>
         <li><a href="#" onclick="showReportForm()">Report Trash</a></li>
         <li><a href="#myreports" onclick="showMyReports()">My Reports</a></li>
+        <!-- Profile link will be added by JS if logged in -->
         <li id="loginNav"><a href="/login">Login</a></li>
       </ul>
     </nav>
   </header>
 
   <section id="home" class="hero">
-    <h2>Clean City, Healthy Living</h2>
-    <p>Report trash easily and help your city stay clean.</p>
-    <a href="#" class="btn" onclick="showReportForm()">Report Now</a>
+    <div class="hero-content">
+      <h2>Keep Your City Clean & Green</h2>
+      <p class="hero-subtitle">Join the movement to make our neighborhoods cleaner, safer, and healthier. Report trash or civic issues in just a few clicks!</p>
+      <a href="#" class="btn hero-btn" onclick="showReportForm()">+ New Report</a>
+    </div>
   </section>
+
+  <br>
+  <section id="latestResolvedSection" class="latest-resolved-section">
+  <h2>🟢 Recently Resolved Issues</h2>
+  <div id="latestResolvedContainer" class="latest-resolved-grid"></div>
+</section>
 
   <section id="report" class="form-section" style="display: none;">
     <h2>📸 Report Trash Spot</h2>
@@ -73,6 +82,51 @@
     <div id="myReportsContainer" class="report-grid"></div>
   </section>
 
+<section id="profile" class="form-section profile-section" style="display: none;">
+  <div class="profile-card">
+    <div class="profile-avatar">
+      <span id="profileAvatarIcon">👤</span>
+    </div>
+    <h2 class="profile-title">My Profile</h2>
+    <form id="profileForm" class="profile-details">
+      <p>
+        <span>👤</span>
+        <strong>Name:</strong>
+        <span id="profileNameDisplay"></span>
+        <button type="button" id="editNameBtn" class="edit-icon-btn" title="Edit Name">✏️</button>
+        <input type="text" id="profileNameInput" name="name" style="display:none;" required>
+        <button type="button" id="saveNameBtn" class="save-icon-btn" style="display:none;" title="Save Name">💾</button>
+      </p>
+      <p>
+        <span>📧</span>
+        <strong>Email:</strong>
+        <span id="profileEmailDisplay"></span>
+      </p>
+      <p>
+        <span>📱</span>
+        <strong>Mobile:</strong>
+        <span id="profileMobileDisplay"></span>
+      </p>
+      <p>
+        <span>🏠</span>
+        <strong>Address:</strong>
+        <span id="profileAddressDisplay"></span>
+        <button type="button" id="editAddressBtn" class="edit-icon-btn" title="Edit Address">✏️</button>
+        <input type="text" id="profileAddressInput" name="address" style="display:none;">
+        <button type="button" id="saveAddressBtn" class="save-icon-btn" style="display:none;" title="Save Address">💾</button>
+      </p>
+      <p>
+        <span>🗓️</span>
+        <strong>Joined:</strong>
+        <span id="profileJoinedDisplay"></span>
+      </p>
+      <div id="profileEditBtns" class="profile-btn-row">
+        <button type="button" class="profile-back-btn" onclick="goBackToHome()">Back to Home</button>
+        <button type="button" class="profile-logout-btn" id="logoutBtn">Logout</button>
+      </div>
+    </form>
+  </div>
+</section>
 
   <footer>
     <p>&copy; 2025 Smart Waste Management System</p>
