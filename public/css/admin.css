@@ -16,10 +16,17 @@ body {
 }
 
 .sidebar {
-  width: 220px;
+  width: 140px;
   background-color: #2b7a0b;
   padding: 20px;
   color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  min-height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
 }
 
 .sidebar h2 {
@@ -48,6 +55,8 @@ body {
 .dashboard {
   flex-grow: 1;
   padding: 30px;
+  margin-left: 140px; /* Match your sidebar width */
+  overflow-x: hidden;  /* Prevent horizontal scroll */
 }
 
 .admin-header h1 {
@@ -85,9 +94,36 @@ body {
   background: #5bc0de;
 }
 
+.reports-table {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(44,167,80,0.10), 0 1.5px 6px rgba(0,0,0,0.04);
+  margin-bottom: 30px;
+  padding-bottom: 0;
+}
+
 .reports-table h2 {
   margin-bottom: 15px;
   color: #333;
+}
+
+.reports-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 0 24px;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.reports-table-header h2 {
+  margin: 0;
+  color: #2b7a0b;
+  font-size: 1.35rem;
+  font-weight: 600;
 }
 
 table {
@@ -106,10 +142,10 @@ table thead {
 
 table th,
 table td {
-  padding: 12px 15px;
+  padding: 12px 10px; /* Reduce if needed */
+  border-bottom: 1px solid #e0e0e0;
   text-align: left;
-  border-bottom: 1px solid #ddd;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 table img {
@@ -242,7 +278,183 @@ table img {
   }
 }
 
-/* ...existing code... */
+/* --- Super Style for Admin Reports Table --- */
+.reports-table table {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(44,167,80,0.10), 0 1.5px 6px rgba(0,0,0,0.04);
+  background: #fff;
+  margin-top: 54px; /* Add space for the filter above */
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+}
+
+.reports-table thead {
+  background: linear-gradient(90deg, #2b7a0b 60%, #43a047 100%);
+  color: #fff;
+  font-size: 1.08rem;
+  letter-spacing: 0.04em;
+}
+
+.reports-table th, .reports-table td {
+  padding: 12px 10px; /* Reduce if needed */
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.reports-table tbody tr {
+  transition: background 0.18s;
+}
+
+.reports-table tbody tr:nth-child(even) {
+  background: #f8fff8;
+}
+
+.reports-table tbody tr:hover {
+  background: #e0ffe0;
+  box-shadow: 0 2px 12px rgba(44,167,80,0.08);
+  cursor: pointer;
+}
+
+.reports-table td img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e0ffe0;
+  box-shadow: 0 2px 8px rgba(44,167,80,0.07);
+}
+
+.reports-table .status {
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  box-shadow: 0 1px 4px rgba(44,167,80,0.07);
+}
+
+.reports-table .status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+.reports-table .status.in-progress {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+.reports-table .status.resolved {
+  background: #d4edda;
+  color: #388e3c;
+}
+
+/* --- Improved Action Buttons for Reports Table --- */
+.reports-table .actions {
+  display: flex;
+  gap: 8px;
+}
+
+.reports-table .actions button {
+  min-width: 120px;
+  max-width: 140px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 1px 4px rgba(44,167,80,0.07);
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.12s;
+  cursor: pointer;
+  outline: none;
+}
+
+.reports-table .actions button:active {
+  transform: scale(0.97);
+}
+
+.reports-table .inprogress-btn {
+  background: linear-gradient(90deg, #42a5f5 60%, #1e88e5 100%);
+  color: #fff;
+}
+.reports-table .inprogress-btn:hover {
+  background: #1976d2;
+}
+
+.reports-table .resolve-btn {
+  background: linear-gradient(90deg, #43a047 60%, #66bb6a 100%);
+  color: #fff;
+}
+.reports-table .resolve-btn:hover {
+  background: #388e3c;
+}
+
+.reports-table .delete-btn {
+  background: linear-gradient(90deg, #e53935 60%, #ff7043 100%);
+  color: #fff;
+}
+.reports-table .delete-btn:hover {
+  background: #b71c1c;
+}
+
+/* Optional: Add icons to buttons using Unicode or FontAwesome if available */
+.reports-table .inprogress-btn::before {
+  content: "🛠️";
+  margin-right: 6px;
+}
+.reports-table .resolve-btn::before {
+  content: "✅";
+  margin-right: 6px;
+}
+.reports-table .delete-btn::before {
+  content: "🗑️";
+  margin-right: 6px;
+}
+
+/* Responsive for small screens */
+@media (max-width: 900px) {
+  .reports-table-header, .reports-table-scroll {
+    padding: 12px;
+  }
+  .reports-table-scroll {
+    max-height: 45vh;
+  }
+  .reports-table {
+    overflow-x: auto;
+  }
+  .reports-table table {
+    min-width: 700px;
+  }
+  .reports-table table, .reports-table thead, .reports-table tbody, .reports-table th, .reports-table td, .reports-table tr {
+    display: block;
+  }
+  .reports-table thead {
+    display: none;
+  }
+  .reports-table tr {
+    margin-bottom: 18px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(44,167,80,0.07);
+    background: #fff;
+  }
+  .reports-table td {
+    padding: 14px 18px;
+    border: none;
+    position: relative;
+  }
+  .reports-table td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #2b7a0b;
+    display: block;
+    margin-bottom: 6px;
+  }
+}
 
 .modal {
   display: none; /* Hidden by default */
@@ -271,4 +483,81 @@ table img {
 @keyframes modalFadeIn {
   from { transform: translateY(-40px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+.reports-table {
+  position: relative;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;  /* Prevent horizontal scroll */
+  margin-bottom: 30px;
+}
+
+/* Prevent table from expanding wider than its container */
+.reports-table table {
+  width: 100%;
+  min-width: 0;         /* Remove min-width to prevent overflow */
+  table-layout: auto;
+  overflow-x: hidden;
+}
+
+/* Hide horizontal scrollbar for the table */
+.reports-table::-webkit-scrollbar {
+  height: 0 !important;
+}
+
+.report-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 18px 18px 0 0;
+  z-index: 2;
+}
+
+.report-filters label {
+  font-weight: 600;
+  color: #2b7a0b;
+  font-size: 1rem;
+}
+
+.report-filters select {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1.5px solid #43a047;
+  background: #f8fff8;
+  font-size: 1rem;
+  color: #2b7a0b;
+  font-weight: 500;
+  box-shadow: 0 1px 6px rgba(44,167,80,0.07);
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.report-filters select:focus {
+  border-color: #2b7a0b;
+  box-shadow: 0 2px 8px rgba(44,167,80,0.13);
+}
+
+.report-filters input[type="date"] {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #43a047;
+  background: #f8fff8;
+  font-size: 1rem;
+  color: #2b7a0b;
+  font-weight: 500;
+  box-shadow: 0 1px 6px rgba(44,167,80,0.07);
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.report-filters input[type="date"]:focus {
+  border-color: #2b7a0b;
+  box-shadow: 0 2px 8px rgba(44,167,80,0.13);
+}
+
+body, html {
+  overflow-x: hidden;   /* Prevent horizontal scroll for the whole page */
 }

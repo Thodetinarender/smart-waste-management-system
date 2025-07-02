@@ -59,24 +59,39 @@
 
       <!-- Reports Section -->
       <section class="reports-table" id="reportsSection" style="display: none;">
-        <h2>All Submitted Reports</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Issue Type</th>
-              <th>User ID</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Image</th>
-              <th>Timestamp</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="reportTableBody">
-            <!-- Dynamically inserted rows -->
-          </tbody>
-        </table>
+        <div class="reports-table-header">
+          <h2>All Submitted Reports</h2>
+          <div class="report-filters">
+            <label for="statusFilter"><strong>Filter by Status:</strong></label>
+            <select id="statusFilter">
+              <option value="all">All</option>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+            <label for="dateFilter" style="margin-left:18px;"><strong>Filter by Date:</strong></label>
+            <input type="date" id="dateFilter" />
+          </div>
+        </div>
+        <div class="reports-table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User Name</th>
+                <th>Issue Type</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Image</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reportTableBody">
+              <!-- Dynamically inserted rows -->
+            </tbody>
+          </table>
+        </div>
       </section>
 
 

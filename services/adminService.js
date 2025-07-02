@@ -21,7 +21,13 @@ const sendStatusEmail = async (toEmail, subject, content) => {
 };
 
 const getAllReports = async () => {
-  return await Report.findAll({ order: [['timestamp', 'DESC']] });
+  return await Report.findAll({ 
+    order: [['timestamp', 'DESC']],
+    include: [{
+      model: User,
+      attributes: ['name']
+    }]
+   });
 };
 
 

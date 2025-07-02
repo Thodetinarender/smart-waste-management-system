@@ -3,55 +3,79 @@ if (document.cookie.split(';').every(c => !c.trim().startsWith('isAdmin=true')))
   window.location.href = '/';
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const response = await fetch('/admin/reports', { credentials: 'include' });
-  const reports = await response.json();
+let allReports = [];
 
+function renderReportsTable(reports) {
   const tableBody = document.getElementById('reportTableBody');
-  const totalReports = document.getElementById('totalReports');
-  const pendingReports = document.getElementById('pendingReports');
-  const inProgressReports = document.getElementById('inProgressReports');
-  const resolvedReports = document.getElementById('resolvedReports');
-
+  tableBody.innerHTML = '';
   let pending = 0, inProgress = 0, resolved = 0;
 
   reports.forEach((report, index) => {
-  let actionButtons = '';
-
+    let actionButtons = '';
     if (report.status === 'Pending') {
-    pending++;
-    actionButtons += `<button class="inprogress-btn" onclick="markInProgress(${report.id})">Mark In Progress</button>`;
-  } else if (report.status === 'In Progress') {
-    inProgress++;
-    actionButtons += `<button class="resolve-btn" onclick="resolveReport(${report.id})">Resolve</button>`;
-  } else if (report.status === 'Resolved') {
-    resolved++;
+      pending++;
+      actionButtons += `<button class="inprogress-btn" onclick="markInProgress(${report.id})">Mark In Progress</button>`;
+    } else if (report.status === 'In Progress') {
+      inProgress++;
+      actionButtons += `<button class="resolve-btn" onclick="resolveReport(${report.id})">Resolve</button>`;
+    } else if (report.status === 'Resolved') {
+      resolved++;
+    }
+    actionButtons += `<button class="delete-btn" onclick="deleteReport(${report.id})">Delete</button>`;
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${report.User ? report.User.name : 'N/A'}</td>
+      <td>${report.issueType}</td>
+      <td>${report.description}</td>
+      <td><span class="status ${report.status.toLowerCase().replace(/\s/g, '-')}">${report.status}</span></td>
+      <td>
+        ${report.image ? `<img src="/uploads/${report.image}" alt="report image">` : 'No Image'}
+      </td>
+      <td>${new Date(report.timestamp).toLocaleString()}</td>
+      <td class="actions">${actionButtons}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  // Update stats
+  document.getElementById('totalReports').textContent = allReports.length;
+  document.getElementById('pendingReports').textContent = allReports.filter(r => r.status === 'Pending').length;
+  document.getElementById('inProgressReports').textContent = allReports.filter(r => r.status === 'In Progress').length;
+  document.getElementById('resolvedReports').textContent = allReports.filter(r => r.status === 'Resolved').length;
+}
+
+function filterAndRenderReports() {
+  const statusValue = document.getElementById('statusFilter').value;
+  const dateValue = document.getElementById('dateFilter').value;
+  let filtered = allReports;
+
+  // Filter by status
+  if (statusValue !== 'all') {
+    filtered = filtered.filter(r => r.status === statusValue);
   }
 
-  actionButtons += `<button class="delete-btn" onclick="deleteReport(${report.id})">Delete</button>`;
+  // Filter by date (YYYY-MM-DD)
+  if (dateValue) {
+    filtered = filtered.filter(r => {
+      const reportDate = new Date(r.timestamp);
+      // Format to YYYY-MM-DD for comparison
+      const reportDateStr = reportDate.toISOString().slice(0, 10);
+      return reportDateStr === dateValue;
+    });
+  }
 
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>${index + 1}</td>
-    <td>${report.issueType}</td>
-    <td>${report.userId}</td>
-    <td>${report.description}</td>
-    <td><span class="status ${report.status.toLowerCase().replace(/\s/g, '-')}">${report.status}</span></td>
-    <td>
-      ${report.image ? `<img src="/uploads/${report.image}" alt="report image">` : 'No Image'}
-    </td>
-    <td>${new Date(report.timestamp).toLocaleString()}</td>
-    <td class="actions">${actionButtons}</td>
-  `;
-  tableBody.appendChild(row);
-});
+  renderReportsTable(filtered);
+}
 
+document.addEventListener('DOMContentLoaded', async () => {
+  const response = await fetch('/admin/reports', { credentials: 'include' });
+  allReports = await response.json();
 
-  // Set report counts
-  totalReports.textContent = reports.length;
-  pendingReports.textContent = pending;
-  inProgressReports.textContent = inProgress;
-  resolvedReports.textContent = resolved;
+  // Sort by latest to oldest
+  allReports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  renderReportsTable(allReports);
 
   // Render Chart
   const ctx = document.getElementById('reportChart').getContext('2d');
@@ -75,7 +99,7 @@ new Chart(ctx, {
     labels: ['Pending', 'In Progress', 'Resolved'],
     datasets: [{
       label: 'Report Status',
-      data: [pending, inProgress, resolved],
+      data: [allReports.filter(r => r.status === 'Pending').length, allReports.filter(r => r.status === 'In Progress').length, allReports.filter(r => r.status === 'Resolved').length],
       backgroundColor: [gradientPending, gradientInProgress, gradientResolved],
       borderColor: '#fff',
       borderWidth: 2
@@ -95,6 +119,10 @@ new Chart(ctx, {
   // Show Dashboard section by default
   document.getElementById('dashboardSection').style.display = 'none';
   document.getElementById('reportsSection').style.display = 'block';
+
+  // Filter logic
+  document.getElementById('statusFilter').addEventListener('change', filterAndRenderReports);
+  document.getElementById('dateFilter').addEventListener('change', filterAndRenderReports);
 });
 
 // ==== Toggle Sections ====
@@ -218,31 +246,6 @@ document.getElementById('resolveForm').addEventListener('submit', async (e) => {
   location.reload();
 });
 
-
-
-// async function markInProgress(id) {
-//   if (!confirm('Mark this report as In Progress?')) return;
-//   const res = await fetch(`/admin/reports/${id}/inprogress`, {
-//     method: 'PUT',
-//     credentials: 'include',
-//     headers: { 'Content-Type': 'application/json' }
-//   });
-//   const data = await res.json();
-//   alert(data.message);
-//   location.reload();
-// }
-
-// async function resolveReport(id) {
-//   if (!confirm('Mark this report as resolved?')) return;
-//   const res = await fetch(`/admin/reports/${id}/resolve`, {
-//     method: 'PUT',
-//     credentials: 'include',
-//     headers: { 'Content-Type': 'application/json' }
-//   });
-//   const data = await res.json();
-//   alert(data.message);
-//   location.reload();
-// }
 
 async function deleteReport(id) {
   if (!confirm('Are you sure you want to delete this report?')) return;

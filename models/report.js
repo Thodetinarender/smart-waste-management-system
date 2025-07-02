@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/db');
+const User = require('./User'); 
 
 const Report = sequelize.define('Report', {
     id: {
@@ -63,5 +64,7 @@ const Report = sequelize.define('Report', {
 }, {
     tableName: 'reports'
 });
+
+Report.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = Report;
