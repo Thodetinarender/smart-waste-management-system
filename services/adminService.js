@@ -1,5 +1,5 @@
 const Report = require('../models/report');
-const User = require('../models/User');
+const User = require('../models/user');
 const Brevo = require('@getbrevo/brevo');
 
 
