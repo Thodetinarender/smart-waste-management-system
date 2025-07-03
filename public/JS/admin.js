@@ -178,6 +178,10 @@ usersLink.addEventListener('click', async (e) => {
         <td>${user.name || 'N/A'}</td>
         <td>${user.email}</td>
         <td>${new Date(user.createdAt).toLocaleString()}</td>
+        <td>
+          <button class="edit-btn" onclick="editUser(${user.id}, '${user.name}', '${user.email}', '${user.address || ''}')">Edit</button>
+          <button class="delete-btn" onclick="deleteUser(${user.id})">Delete</button>
+        </td>
       `;
       tbody.appendChild(row);
     });
@@ -258,6 +262,66 @@ async function deleteReport(id) {
   location.reload();
 }
 
+// Settings dropdown logic
+const settingsLink = document.getElementById('settingsLink');
+const settingsDropdown = document.getElementById('settingsDropdown');
+
+settingsLink.addEventListener('click', (e) => {
+  e.preventDefault();
+  settingsDropdown.style.display = settingsDropdown.style.display === 'none' ? 'block' : 'none';
+});
+
+// Hide dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!settingsLink.contains(e.target) && !settingsDropdown.contains(e.target)) {
+    settingsDropdown.style.display = 'none';
+  }
+});
+
+// Admin logout logic
+document.getElementById('adminLogoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const res = await fetch('/logout', { method: 'POST', credentials: 'include' });
+  if (res.ok) {
+    window.location.href = '/login';
+  }
+});
+
 window.markInProgress = markInProgress;
 window.resolveReport = resolveReport;
 window.closeModal = closeModal;
+window.editUser = function(id, name, email, address) {
+  document.getElementById('editUserId').value = id;
+  document.getElementById('editUserName').value = name;
+  document.getElementById('editUserEmail').value = email;
+  document.getElementById('editUserAddress').value = address;
+  document.getElementById('editUserModal').style.display = 'block';
+};
+
+window.deleteUser = async function(id) {
+  if (!confirm('Are you sure you want to delete this user?')) return;
+  const res = await fetch(`/admin/users/${id}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  });
+  const data = await res.json();
+  alert(data.message);
+  location.reload();
+};
+
+document.getElementById('editUserForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const id = document.getElementById('editUserId').value;
+  const name = document.getElementById('editUserName').value;
+  const email = document.getElementById('editUserEmail').value;
+  const address = document.getElementById('editUserAddress').value;
+  const res = await fetch(`/admin/users/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ name, email, address })
+  });
+  const data = await res.json();
+  alert(data.message);
+  location.reload();
+});

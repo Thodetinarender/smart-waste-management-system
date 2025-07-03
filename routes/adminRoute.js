@@ -24,6 +24,8 @@ router.get('/admin/users', adminController.handleGetAllUsers);
 
 router.put('/admin/reports/:id/inprogress', upload.single('image'), adminController.handleMarkInProgress);
 router.put('/admin/reports/:id/resolve', upload.single('image'), adminController.handleResolveReport);
+router.put('/admin/users/:id', adminController.handleEditUser);
+router.delete('/admin/users/:id', adminController.handleDeleteUser);
 
 
 module.exports = router;

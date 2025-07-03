@@ -76,11 +76,31 @@ const handleGetAllUsers = async (req, res) => {
   }
 };
 
+const handleEditUser = async (req, res) => {
+  try {
+    const { name, email, address } = req.body;
+    await adminService.editUser(req.params.id, { name, email, address });
+    res.json({ message: 'User updated' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const handleDeleteUser = async (req, res) => {
+  try {
+    await adminService.deleteUser(req.params.id);
+    res.json({ message: 'User deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 module.exports = {
   handleGetAllReports,
   handleMarkInProgress,
   handleResolveReport,
   handleDeleteReport,
-  handleGetAllUsers
+  handleGetAllUsers,
+  handleEditUser,
+  handleDeleteUser
 };

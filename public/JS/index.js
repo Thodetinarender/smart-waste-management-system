@@ -1,4 +1,34 @@
 let map, marker;
+let orrPolygon; // <-- Make it global
+const orrBoundary = [
+  [17.648, 78.285],
+  [17.710, 78.400],
+  [17.715, 78.520],
+  [17.670, 78.635],
+  [17.580, 78.700],
+  [17.470, 78.710],
+  [17.360, 78.680],
+  [17.280, 78.600],
+  [17.230, 78.480],
+  [17.250, 78.360],
+  [17.340, 78.270],
+  [17.460, 78.245],
+  [17.580, 78.260],
+  [17.648, 78.285]
+];
+
+// Point-in-polygon function (Ray casting algorithm)
+function isWithinHyderabad(lat, lng) {
+  let inside = false;
+  for (let i = 0, j = orrBoundary.length - 1; i < orrBoundary.length; j = i++) {
+    const xi = orrBoundary[i][0], yi = orrBoundary[i][1];
+    const xj = orrBoundary[j][0], yj = orrBoundary[j][1];
+    const intersect = ((yi > lng) !== (yj > lng)) &&
+      (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
 
 function isLoggedIn() {
   return document.cookie.split(';').some(c => c.trim().startsWith('loggedIn=true'));
@@ -64,10 +94,29 @@ function initMap() {
   // Add draggable marker
   marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
 
+  // Draw ORR polygon and assign to global variable
+  orrPolygon = L.polygon(orrBoundary, {
+    color: "#1976d2",
+    weight: 2,
+    fillOpacity: 0.07,
+    dashArray: "6"
+  }).addTo(map);
+
+  // Fit map to ORR bounds
+  map.fitBounds(orrPolygon.getBounds());
+
   // Handle map click to move marker and get address
   map.on('click', function (e) {
     const { lat, lng } = e.latlng;
-
+    if (!isWithinHyderabad(lat, lng)) {
+      alert("Please select a location within Hyderabad city limits.");
+      map.setView([defaultLat, defaultLng], 13);
+      marker.setLatLng([defaultLat, defaultLng]);
+      document.getElementById("latitude").value = defaultLat;
+      document.getElementById("longitude").value = defaultLng;
+      fetchAddressFromCoordinates(defaultLat, defaultLng);
+      return;
+    }
     marker.setLatLng([lat, lng]);
     document.getElementById("latitude").value = lat.toFixed(6);
     document.getElementById("longitude").value = lng.toFixed(6);
@@ -107,6 +156,15 @@ function initMap() {
   // Update lat/lng on drag
   marker.on('dragend', () => {
     const pos = marker.getLatLng();
+    if (!isWithinHyderabad(pos.lat, pos.lng)) {
+      alert("Please select a location within Hyderabad city limits.");
+      marker.setLatLng([defaultLat, defaultLng]);
+      map.setView([defaultLat, defaultLng], 13);
+      document.getElementById("latitude").value = defaultLat;
+      document.getElementById("longitude").value = defaultLng;
+      fetchAddressFromCoordinates(defaultLat, defaultLng);
+      return;
+    }
     document.getElementById("latitude").value = pos.lat.toFixed(6);
     document.getElementById("longitude").value = pos.lng.toFixed(6);
     fetchAddressFromCoordinates(pos.lat, pos.lng);

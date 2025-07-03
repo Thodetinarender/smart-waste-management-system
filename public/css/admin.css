@@ -418,43 +418,245 @@ table img {
 
 /* Responsive for small screens */
 @media (max-width: 900px) {
-  .reports-table-header, .reports-table-scroll {
+  .admin-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    position: static;
+    width: 100vw;
+    height: auto;
+    min-height: unset;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 10px 0;
+    z-index: 100;
+  }
+  .sidebar h2 {
+    display: none;
+  }
+  .sidebar ul {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  .sidebar ul li {
+    margin: 0;
+  }
+  .dashboard {
+    margin-left: 0;
+    padding: 14px 4vw 14px 4vw;
+  }
+  .dashboard-grid {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .stats-cards {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .chart-section {
+    max-width: 100%;
     padding: 12px;
+    margin-top: 10px;
+  }
+  .reports-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 6px 0 6px;
   }
   .reports-table-scroll {
+    padding: 0 2px;
     max-height: 45vh;
-  }
-  .reports-table {
     overflow-x: auto;
   }
   .reports-table table {
     min-width: 700px;
-  }
-  .reports-table table, .reports-table thead, .reports-table tbody, .reports-table th, .reports-table td, .reports-table tr {
-    display: block;
-  }
-  .reports-table thead {
-    display: none;
-  }
-  .reports-table tr {
-    margin-bottom: 18px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(44,167,80,0.07);
-    background: #fff;
-  }
-  .reports-table td {
-    padding: 14px 18px;
-    border: none;
-    position: relative;
-  }
-  .reports-table td:before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #2b7a0b;
-    display: block;
-    margin-bottom: 6px;
+    font-size: 0.98rem;
   }
 }
+
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 8px 2vw 8px 2vw;
+  }
+  .stats-cards {
+    gap: 8px;
+  }
+  .card {
+    font-size: 1rem;
+    padding: 12px 6px;
+  }
+  .chart-section {
+    padding: 8px;
+  }
+  .reports-table-header h2 {
+    font-size: 1.1rem;
+  }
+  .reports-table th, .reports-table td {
+    padding: 8px 4px;
+    font-size: 0.95rem;
+  }
+  .reports-table-scroll {
+    padding: 0 1px;
+  }
+  .modal-content,
+  #editUserModal .modal-content,
+  #inProgressModal .modal-content,
+  #resolveModal .modal-content {
+    padding: 12px 2vw 12px 2vw;
+    max-width: 99vw;
+    min-width: 0;
+  }
+  #editUserModal h2,
+  #inProgressModal h2,
+  #resolveModal h2 {
+    font-size: 1rem;
+  }
+  .users-section table,
+  .reports-table table {
+    font-size: 0.93rem;
+  }
+  .users-section .edit-btn,
+  .users-section .delete-btn,
+  .reports-table .actions button {
+    padding: 7px 10px;
+    font-size: 0.95rem;
+    min-width: 80px;
+    max-width: 120px;
+  }
+}
+
+/* Hide sidebar if too small, show hamburger (optional) */
+/* You can add a hamburger menu for better UX if needed */
+
+/* --- Responsive Styles for Admin Dashboard --- */
+@media (max-width: 900px) {
+  .admin-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    position: static;
+    width: 100vw;
+    height: auto;
+    min-height: unset;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 10px 0;
+    z-index: 100;
+  }
+  .sidebar h2 {
+    display: none;
+  }
+  .sidebar ul {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  .sidebar ul li {
+    margin: 0;
+  }
+  .dashboard {
+    margin-left: 0;
+    padding: 14px 4vw 14px 4vw;
+  }
+  .dashboard-grid {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .stats-cards {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .chart-section {
+    max-width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .reports-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 6px 0 6px;
+  }
+  .reports-table-scroll {
+    padding: 0 2px;
+    max-height: 45vh;
+    overflow-x: auto;
+  }
+  .reports-table table {
+    min-width: 700px;
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 8px 2vw 8px 2vw;
+  }
+  .stats-cards {
+    gap: 8px;
+  }
+  .card {
+    font-size: 1rem;
+    padding: 12px 6px;
+  }
+  .chart-section {
+    padding: 8px;
+  }
+  .reports-table-header h2 {
+    font-size: 1.1rem;
+  }
+  .reports-table th, .reports-table td {
+    padding: 8px 4px;
+    font-size: 0.95rem;
+  }
+  .reports-table-scroll {
+    padding: 0 1px;
+  }
+  .modal-content,
+  #editUserModal .modal-content,
+  #inProgressModal .modal-content,
+  #resolveModal .modal-content {
+    padding: 12px 2vw 12px 2vw;
+    max-width: 99vw;
+    min-width: 0;
+  }
+  #editUserModal h2,
+  #inProgressModal h2,
+  #resolveModal h2 {
+    font-size: 1rem;
+  }
+  .users-section table,
+  .reports-table table {
+    font-size: 0.93rem;
+  }
+  .users-section .edit-btn,
+  .users-section .delete-btn,
+  .reports-table .actions button {
+    padding: 7px 10px;
+    font-size: 0.95rem;
+    min-width: 80px;
+    max-width: 120px;
+  }
+}
+
+/* Hide sidebar if too small, show hamburger (optional) */
+/* You can add a hamburger menu for better UX if needed */
 
 .modal {
   display: none; /* Hidden by default */
@@ -560,4 +762,285 @@ table img {
 
 body, html {
   overflow-x: hidden;   /* Prevent horizontal scroll for the whole page */
+}
+
+.settings-dropdown {
+  position: relative;
+}
+.settings-dropdown .dropdown-menu {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: #fff;
+  color: #2b7a0b;
+  min-width: 120px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(44,167,80,0.13);
+  z-index: 100;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.settings-dropdown .dropdown-menu li a {
+  display: block;
+  padding: 10px 18px;
+  color: #2b7a0b;
+  text-decoration: none;
+  font-weight: 500;
+}
+.settings-dropdown .dropdown-menu li a:hover {
+  background: #e0ffe0;
+}
+
+/* --- Stylish Action Buttons --- */
+.users-section .edit-btn,
+.users-section .delete-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-right: 8px;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.12s;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(44,167,80,0.07);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.users-section .edit-btn {
+  background: linear-gradient(90deg, #42a5f5 60%, #1e88e5 100%);
+  color: #fff;
+}
+.users-section .edit-btn:hover {
+  background: #1976d2;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.users-section .delete-btn {
+  background: linear-gradient(90deg, #e53935 60%, #ff7043 100%);
+  color: #fff;
+}
+.users-section .delete-btn:hover {
+  background: #b71c1c;
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Add icons to buttons (optional, Unicode) */
+.users-section .edit-btn::before {
+  content: "✏️";
+  margin-right: 6px;
+}
+.users-section .delete-btn::before {
+  content: "🗑️";
+  margin-right: 6px;
+}
+
+/* --- Edit User Modal Form Styling --- */
+#editUserModal .modal-content {
+  background: #f8fff8;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(44,167,80,0.13), 0 2px 8px rgba(0,0,0,0.07);
+  padding: 36px 28px 28px 28px;
+  max-width: 420px;
+  width: 98vw;
+  margin: 8% auto;
+  animation: modalFadeIn 0.3s;
+}
+
+#editUserModal h2 {
+  color: #2b7a0b;
+  margin-bottom: 18px;
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#editUserForm label {
+  font-weight: 600;
+  color: #2b7a0b;
+  margin-bottom: 4px;
+  display: block;
+  margin-top: 12px;
+}
+
+#editUserForm input[type="text"],
+#editUserForm input[type="email"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #b7e1c0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  margin-bottom: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+#editUserForm input[type="text"]:focus,
+#editUserForm input[type="email"]:focus {
+  border-color: #2b7a0b;
+  background: #f8fff8;
+  box-shadow: 0 0 0 2px #b2dfdb;
+}
+
+#editUserForm button[type="submit"] {
+  background: linear-gradient(90deg, #43a047 60%, #66bb6a 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.08rem;
+  padding: 12px 0;
+  border-radius: 30px;
+  border: none;
+  margin-top: 18px;
+  width: 100%;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(44,167,80,0.13);
+}
+#editUserForm button[type="submit"]:hover {
+  background: #388e3c;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}
+
+#editUserForm button[type="button"] {
+  background: #bdbdbd;
+  color: #2b7a0b;
+  font-weight: 600;
+  border-radius: 30px;
+  padding: 12px 0;
+  border: none;
+  margin-top: 10px;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+}
+#editUserForm button[type="button"]:hover {
+  background: #757575;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  #editUserModal .modal-content {
+    padding: 18px 4vw 18px 4vw;
+    max-width: 98vw;
+  }
+  #editUserModal h2 {
+    font-size: 1.1rem;
+  }
+}
+
+/* --- Attractive Modal Styles for In Progress & Resolved --- */
+#inProgressModal .modal-content,
+#resolveModal .modal-content {
+  background: #f8fff8;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(44,167,80,0.13), 0 2px 8px rgba(0,0,0,0.07);
+  padding: 36px 28px 28px 28px;
+  max-width: 420px;
+  width: 98vw;
+  margin: 8% auto;
+  animation: modalFadeIn 0.3s;
+}
+
+#inProgressModal h2,
+#resolveModal h2 {
+  color: #1e88e5;
+  margin-bottom: 18px;
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#inProgressForm label,
+#resolveForm label {
+  font-weight: 600;
+  color: #2b7a0b;
+  margin-bottom: 4px;
+  display: block;
+  margin-top: 12px;
+}
+
+#inProgressForm textarea,
+#resolveForm textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 12px 14px;
+  border: 1.5px solid #b7e1c0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  margin-bottom: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  resize: vertical;
+}
+
+#inProgressForm textarea:focus,
+#resolveForm textarea:focus {
+  border-color: #1e88e5;
+  background: #f8fff8;
+  box-shadow: 0 0 0 2px #b2dfdb;
+}
+
+#inProgressForm input[type="file"],
+#resolveForm input[type="file"] {
+  margin-top: 8px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+#inProgressForm button[type="submit"],
+#resolveForm button[type="submit"] {
+  background: linear-gradient(90deg, #42a5f5 60%, #1e88e5 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.08rem;
+  padding: 12px 0;
+  border-radius: 30px;
+  border: none;
+  margin-top: 18px;
+  width: 100%;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(44,167,80,0.13);
+}
+#inProgressForm button[type="submit"]:hover,
+#resolveForm button[type="submit"]:hover {
+  background: #1976d2;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}
+
+#inProgressForm button[type="button"],
+#resolveForm button[type="button"] {
+  background: #bdbdbd;
+  color: #2b7a0b;
+  font-weight: 600;
+  border-radius: 30px;
+  padding: 12px 0;
+  border: none;
+  margin-top: 10px;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+}
+#inProgressForm button[type="button"]:hover,
+#resolveForm button[type="button"]:hover {
+  background: #757575;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  #inProgressModal .modal-content,
+  #resolveModal .modal-content {
+    padding: 18px 4vw 18px 4vw;
+    max-width: 98vw;
+  }
+  #inProgressModal h2,
+  #resolveModal h2 {
+    font-size: 1.1rem;
+  }
 }

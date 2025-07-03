@@ -128,11 +128,28 @@ const getAllUsers = async () => {
   return await User.findAll({ order: [['createdAt', 'DESC']] });
 }
 
+// Edit user
+const editUser = async (id, { name, email, address }) => {
+  const user = await User.findByPk(id);
+  if (!user) throw new Error('User not found');
+  user.name = name;
+  user.email = email;
+  user.address = address;
+  await user.save();
+};
+
+// Delete user
+const deleteUser = async (id) => {
+  const deleted = await User.destroy({ where: { id } });
+  if (!deleted) throw new Error('User not found or already deleted');
+};
 
 module.exports = {
   getAllReports,
   markInProgress,
   resolveReport,
   deleteReport,
-  getAllUsers
+  getAllUsers,
+  editUser,
+  deleteUser
 };
